@@ -94,3 +94,111 @@
     applyFilters();
   }
 })();
+async function loadDynamicArticle() {
+  const titleElement = document.querySelector("#article-title");
+
+  if (!titleElement) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+
+  if (!slug) {
+    titleElement.textContent = "Article introuvable";
+    return;
+  }
+
+  try {
+    const response = await fetch("content/articles.json");
+
+    if (!response.ok) {
+      throw new Error("Impossible de charger les articles");
+    }
+
+    const data = await response.json();
+
+    const article = data.articles.find(
+      item => item.slug === slug
+    );
+
+    if (!article) {
+      titleElement.textContent = "Article introuvable";
+      return;
+    }
+
+    document.title = `${article.title} — Nolan Bernard`;
+
+    document.querySelector("#article-category").textContent =
+      article.category || "";
+
+    document.querySelector("#article-title").textContent =
+      article.title || "";
+
+    document.querySelector("#article-intro").textContent =
+      article.intro || "";
+
+    document.querySelector("#article-reading-time").textContent =
+      article.readingTime || "";
+
+    if (article.date) {
+      const date = new Date(article.date);
+
+      document.querySelector("#article-date").textContent =
+        date.toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+    }
+
+    const body = document.querySelector("#article-body");
+
+    body.innerHTML = markdownToHtml(article.body || "");
+
+  } catch (error) {
+    console.error(error);
+
+    titleElement.textContent =
+      "Impossible de charger cet article";
+  }
+}
+
+
+function markdownToHtml(markdown) {
+  if (!markdown) return "";
+
+  let html = markdown;
+
+  html = html
+    .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+    .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+    .replace(/^# (.*$)/gim, "<h1>$1</h1>");
+
+  html = html
+    .replace(/\*\*(.*?)\*\*/gim, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/gim, "<em>$1</em>");
+
+  html = html
+    .replace(/^> (.*$)/gim, "<blockquote>$1</blockquote>");
+
+  html = html
+    .split(/\n\n+/)
+    .map(block => {
+
+      if (
+        block.startsWith("<h") ||
+        block.startsWith("<blockquote") ||
+        block.startsWith("<ul") ||
+        block.startsWith("<ol")
+      ) {
+        return block;
+      }
+
+      return `<p>${block.replace(/\n/g, "<br>")}</p>`;
+    })
+    .join("");
+
+  return html;
+}
+
+
+loadDynamicArticle();
