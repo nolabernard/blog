@@ -235,9 +235,201 @@
     </div>
 
   </footer>
+<script src="script.js" defer></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async function () {
+
+  const list = document.getElementById("dynamic-article-list");
+  const count = document.getElementById("dynamic-article-count");
+  const empty = document.getElementById("dynamic-empty-state");
+  const search = document.getElementById("dynamic-search");
+  const filterButtons = document.querySelectorAll("[data-dynamic-filter]");
+
+  if (!list) return;
+
+  let allArticles = [];
+  let activeCategory = "all";
 
 
-  <script src="script.js" defer></script>
+  function formatDate(value) {
+    if (!value) return "";
+
+    return new Date(value).toLocaleDateString("fr-FR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  }
+
+
+  function escapeHtml(value) {
+    const div = document.createElement("div");
+    div.textContent = value || "";
+    return div.innerHTML;
+  }
+
+
+  function displayArticles() {
+
+    const searchValue = search
+      ? search.value.toLowerCase().trim()
+      : "";
+
+    const filtered = allArticles.filter(article => {
+
+      const categoryOK =
+        activeCategory === "all" ||
+        article.category === activeCategory;
+
+      const text = (
+        (article.title || "") + " " +
+        (article.intro || "") + " " +
+        (article.category || "")
+      ).toLowerCase();
+
+      const searchOK =
+        text.includes(searchValue);
+
+      return categoryOK && searchOK;
+    });
+
+
+    list.innerHTML = "";
+
+
+    filtered.forEach(article => {
+
+      const element = document.createElement("article");
+
+      element.className = "archive-item";
+
+      element.innerHTML = `
+        <div>
+          <p class="category">
+            ${escapeHtml(article.category)}
+          </p>
+        </div>
+
+        <div class="archive-item-main">
+
+          <h2>
+            <a href="article.html?slug=${encodeURIComponent(article.slug)}">
+              ${escapeHtml(article.title)}
+            </a>
+          </h2>
+
+          <p>
+            ${escapeHtml(article.intro)}
+          </p>
+
+        </div>
+
+        <div class="story-meta">
+
+          <time>
+            ${formatDate(article.date)}
+          </time>
+
+          <span>
+            ${escapeHtml(article.readingTime)}
+          </span>
+
+        </div>
+      `;
+
+      list.appendChild(element);
+    });
+
+
+    if (count) {
+      count.textContent =
+        filtered.length === 1
+          ? "1 article"
+          : filtered.length + " articles";
+    }
+
+
+    if (empty) {
+      empty.hidden = filtered.length !== 0;
+    }
+
+  }
+
+
+  try {
+
+    const response = await fetch(
+      "content/articles.json?cache=" + Date.now()
+    );
+
+    if (!response.ok) {
+      throw new Error("Erreur JSON");
+    }
+
+    const data = await response.json();
+
+    allArticles = Array.isArray(data.articles)
+      ? data.articles
+      : [];
+
+
+    allArticles.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+
+    displayArticles();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    if (count) {
+      count.textContent = "Erreur de chargement";
+    }
+
+    list.innerHTML = `
+      <p class="empty-state">
+        Impossible de charger les articles.
+      </p>
+    `;
+
+  }
+
+
+  filterButtons.forEach(button => {
+
+    button.addEventListener("click", function () {
+
+      filterButtons.forEach(btn => {
+        btn.classList.remove("is-active");
+      });
+
+      button.classList.add("is-active");
+
+      activeCategory =
+        button.dataset.dynamicFilter;
+
+      displayArticles();
+
+    });
+
+  });
+
+
+  if (search) {
+
+    search.addEventListener(
+      "input",
+      displayArticles
+    );
+
+  }
+
+});
+</script>
 
 </body>
 
