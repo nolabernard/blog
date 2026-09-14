@@ -1,3 +1,13 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "readingTime": "5 min",
+      "title": "Mon premier article test",
+      "slug": "mon-premier-article-test",
+      "category": "Entreprendre",
+      "date": "2026-09-14",
+      "intro": "salut jowww",
+      "body": "bien ou quoi"
+    }
+  ]
 }
