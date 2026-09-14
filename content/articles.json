@@ -1,3 +1,13 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "readingTime": "5 min",
+      "title": "teste",
+      "slug": "fdfd",
+      "category": "Psychologie",
+      "date": "2026-09-14",
+      "intro": "fdfd",
+      "body": "dfdfdfdfdfd"
+    }
+  ]
 }
