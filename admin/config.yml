@@ -1,1 +1,66 @@
+backend:
+  name: github
+  repo: nolabernard/blog
+  branch: main
 
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "articles"
+    label: "Articles"
+
+    files:
+      - label: "Tous les articles"
+        name: "articles"
+        file: "content/articles.json"
+        format: "json"
+
+        fields:
+          - label: "Articles"
+            name: "articles"
+            widget: "list"
+            add_to_top: true
+            summary: "{{fields.title}}"
+
+            fields:
+              - label: "Titre"
+                name: "title"
+                widget: "string"
+
+              - label: "Slug"
+                name: "slug"
+                widget: "string"
+                hint: "Exemple : pourquoi-je-change-davis"
+
+              - label: "Catégorie"
+                name: "category"
+                widget: "select"
+                options:
+                  - "Entreprendre"
+                  - "Psychologie"
+                  - "Réflexions"
+
+              - label: "Date"
+                name: "date"
+                widget: "datetime"
+                format: "YYYY-MM-DD"
+                time_format: false
+
+              - label: "Temps de lecture"
+                name: "readingTime"
+                widget: "string"
+                default: "5 min"
+
+              - label: "Introduction"
+                name: "intro"
+                widget: "text"
+
+              - label: "Image"
+                name: "image"
+                widget: "image"
+                required: false
+
+              - label: "Contenu"
+                name: "body"
+                widget: "markdown"
