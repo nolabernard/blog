@@ -416,6 +416,116 @@ function markdownToHtml(markdown) {
 
   return html;
 }
-
-
 loadDynamicArticle();
+async function loadHomeLatestArticles() {
+  const container = document.querySelector("#home-latest-articles");
+
+  if (!container) return;
+
+  try {
+    const response = await fetch("content/articles.json");
+
+    if (!response.ok) {
+      throw new Error("Impossible de charger les articles");
+    }
+
+    const data = await response.json();
+
+    const articles = Array.isArray(data.articles)
+      ? data.articles
+      : [];
+
+    articles.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    const latest = articles.slice(0, 5);
+
+    if (latest.length === 0) {
+      container.innerHTML = `
+        <p class="empty-state">
+          Aucun article publié pour le moment.
+        </p>
+      `;
+      return;
+    }
+
+    container.innerHTML = latest.map((article, index) => {
+      const formattedDate = article.date
+        ? new Date(article.date).toLocaleDateString("fr-FR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+          })
+        : "";
+
+      const articleUrl =
+        `article.html?slug=${encodeURIComponent(article.slug)}`;
+
+      if (index === 0) {
+        return `
+          <div class="featured-story reveal is-visible">
+
+            <div>
+              <p class="category">
+                ${escapeArticleHtml(article.category || "")}
+              </p>
+
+              <h3>
+                <a href="${articleUrl}">
+                  ${escapeArticleHtml(article.title || "")}
+                </a>
+              </h3>
+
+              <p>
+                ${escapeArticleHtml(article.intro || "")}
+              </p>
+            </div>
+
+            <div class="story-meta">
+              <time>${formattedDate}</time>
+              <span>${escapeArticleHtml(article.readingTime || "")}</span>
+            </div>
+
+          </div>
+        `;
+      }
+
+      return `
+        <article class="story-row reveal is-visible">
+
+          <div>
+            <p class="category">
+              ${escapeArticleHtml(article.category || "")}
+            </p>
+
+            <h3>
+              <a href="${articleUrl}">
+                ${escapeArticleHtml(article.title || "")}
+              </a>
+            </h3>
+
+            <p>
+              ${escapeArticleHtml(article.intro || "")}
+            </p>
+          </div>
+
+          <div class="story-meta">
+            <time>${formattedDate}</time>
+            <span>${escapeArticleHtml(article.readingTime || "")}</span>
+          </div>
+
+        </article>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error(error);
+
+    container.innerHTML = `
+      <p class="empty-state">
+        Impossible de charger les derniers articles.
+      </p>
+    `;
+  }
+loadHomeLatestArticles();
