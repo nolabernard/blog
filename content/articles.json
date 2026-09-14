@@ -1,6 +1,16 @@
 {
   "articles": [
     {
+      "readingTime": "3 mn",
+      "title": "ma pensée d'aujourd'hui",
+      "slug": "pensé",
+      "category": "Psychologie",
+      "date": "2026-09-15",
+      "intro": "ca me casse les couilles",
+      "body": "mais cest ok",
+      "image": "/images/uploads/capture-d’écran-2026-09-14-à-23.56.34.png"
+    },
+    {
       "readingTime": "5 min",
       "title": "nouveau testaaa",
       "slug": "dsdsd",
