@@ -28,7 +28,224 @@
   document.querySelectorAll('[data-year]').forEach(el => {
     el.textContent = new Date().getFullYear();
   });
+let dynamicArticles = [];
+let activeDynamicCategory = "all";
+let dynamicSearchTerm = "";
 
+
+async function loadDynamicArticlesList() {
+  const list = document.querySelector("#dynamic-article-list");
+
+  if (!list) return;
+
+  try {
+    const response = await fetch("content/articles.json");
+
+    if (!response.ok) {
+      throw new Error("Impossible de charger les articles.");
+    }
+
+    const data = await response.json();
+
+    dynamicArticles = Array.isArray(data.articles)
+      ? data.articles
+      : [];
+
+    dynamicArticles.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    renderDynamicArticles();
+
+  } catch (error) {
+    console.error(error);
+
+    list.innerHTML = `
+      <p class="empty-state">
+        Impossible de charger les articles.
+      </p>
+    `;
+
+    const count = document.querySelector("#dynamic-article-count");
+
+    if (count) {
+      count.textContent = "Erreur de chargement";
+    }
+  }
+}
+
+
+function renderDynamicArticles() {
+  const list = document.querySelector("#dynamic-article-list");
+  const count = document.querySelector("#dynamic-article-count");
+  const empty = document.querySelector("#dynamic-empty-state");
+
+  if (!list) return;
+
+
+  const filteredArticles = dynamicArticles.filter(article => {
+
+    const categoryMatches =
+      activeDynamicCategory === "all" ||
+      article.category === activeDynamicCategory;
+
+
+    const searchableText = `
+      ${article.title || ""}
+      ${article.intro || ""}
+      ${article.category || ""}
+    `.toLowerCase();
+
+
+    const searchMatches =
+      searchableText.includes(
+        dynamicSearchTerm.toLowerCase()
+      );
+
+
+    return categoryMatches && searchMatches;
+  });
+
+
+  list.innerHTML = "";
+
+
+  filteredArticles.forEach(article => {
+
+    const item = document.createElement("article");
+
+    item.className = "archive-item";
+
+
+    const formattedDate = article.date
+      ? new Date(article.date).toLocaleDateString(
+          "fr-FR",
+          {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+          }
+        )
+      : "";
+
+
+    item.innerHTML = `
+
+      <div>
+        <p class="category">
+          ${escapeArticleHtml(article.category || "")}
+        </p>
+      </div>
+
+
+      <div class="archive-item-main">
+
+        <h2>
+
+          <a href="article.html?slug=${encodeURIComponent(article.slug)}">
+            ${escapeArticleHtml(article.title || "")}
+          </a>
+
+        </h2>
+
+
+        <p>
+          ${escapeArticleHtml(article.intro || "")}
+        </p>
+
+      </div>
+
+
+      <div class="story-meta">
+
+        <time>
+          ${formattedDate}
+        </time>
+
+        <span>
+          ${escapeArticleHtml(article.readingTime || "")}
+        </span>
+
+      </div>
+
+    `;
+
+
+    list.appendChild(item);
+  });
+
+
+  if (count) {
+
+    const total = filteredArticles.length;
+
+    count.textContent =
+      total === 1
+        ? "1 article"
+        : `${total} articles`;
+  }
+
+
+  if (empty) {
+    empty.hidden = filteredArticles.length !== 0;
+  }
+}
+
+
+function escapeArticleHtml(value) {
+  const div = document.createElement("div");
+
+  div.textContent = String(value);
+
+  return div.innerHTML;
+}
+
+
+document
+  .querySelectorAll("[data-dynamic-filter]")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll("[data-dynamic-filter]")
+        .forEach(btn => {
+          btn.classList.remove("is-active");
+        });
+
+
+      button.classList.add("is-active");
+
+
+      activeDynamicCategory =
+        button.dataset.dynamicFilter;
+
+
+      renderDynamicArticles();
+    });
+
+  });
+
+
+const dynamicSearch =
+  document.querySelector("#dynamic-search");
+
+
+if (dynamicSearch) {
+
+  dynamicSearch.addEventListener("input", event => {
+
+    dynamicSearchTerm =
+      event.target.value.trim();
+
+    renderDynamicArticles();
+
+  });
+
+}
+
+
+loadDynamicArticlesList();
   if (header) {
     const updateHeader = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
     updateHeader();
