@@ -1,3 +1,13 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "readingTime": "5 min",
+      "title": "nouveau testaaa",
+      "slug": "dsdsd",
+      "category": "Entreprendre",
+      "date": "2026-09-15",
+      "intro": "dsdsdsd",
+      "body": "salut jow"
+    }
+  ]
 }
