@@ -1,3 +1,13 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "readingTime": "5 min",
+      "title": "nouveau teste",
+      "slug": "testeeee",
+      "category": "Réflexions",
+      "date": "2026-09-14",
+      "intro": "salut jow cava",
+      "body": "okaaaa"
+    }
+  ]
 }
