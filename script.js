@@ -1214,256 +1214,37 @@ function markdownToHtml(markdown) {
     return "";
   }
 
+  if (
+    typeof marked === "undefined" ||
+    typeof DOMPurify === "undefined"
+  ) {
 
-  const source =
-    escapeHtml(markdown)
-      .replace(/\r\n/g, "\n");
-
-
-  const lines =
-    source.split("\n");
-
-
-  const output = [];
-
-  let paragraph = [];
-  let listItems = [];
-  let listType = null;
-
-
-  function flushParagraph() {
-
-    if (!paragraph.length) {
-      return;
-    }
-
-
-    let text =
-      paragraph.join("<br>");
-
-
-    text =
-      applyInlineMarkdown(text);
-
-
-    output.push(
-      `<p>${text}</p>`
+    console.error(
+      "Marked ou DOMPurify n'est pas chargé."
     );
 
-
-    paragraph = [];
-
+    return `<p>${escapeHtml(markdown)}</p>`;
   }
 
 
-  function flushList() {
-
-    if (!listItems.length) {
-      return;
+  const html = marked.parse(
+    markdown,
+    {
+      breaks: true,
+      gfm: true
     }
+  );
 
 
-    const tag =
-      listType === "ol"
-        ? "ol"
-        : "ul";
-
-
-    output.push(
-      `<${tag}>` +
-      listItems
-        .map(item =>
-          `<li>${applyInlineMarkdown(item)}</li>`
-        )
-        .join("") +
-      `</${tag}>`
-    );
-
-
-    listItems = [];
-    listType = null;
-
-  }
-
-
-  lines.forEach(line => {
-
-    const trimmed =
-      line.trim();
-
-
-    if (!trimmed) {
-
-      flushParagraph();
-      flushList();
-
-      return;
+  return DOMPurify.sanitize(
+    html,
+    {
+      ADD_ATTR: [
+        "target",
+        "rel"
+      ]
     }
-
-
-    const h3 =
-      trimmed.match(
-        /^###\s+(.+)$/
-      );
-
-
-    if (h3) {
-
-      flushParagraph();
-      flushList();
-
-      output.push(
-        `<h3>${applyInlineMarkdown(h3[1])}</h3>`
-      );
-
-      return;
-    }
-
-
-    const h2 =
-      trimmed.match(
-        /^##\s+(.+)$/
-      );
-
-
-    if (h2) {
-
-      flushParagraph();
-      flushList();
-
-      output.push(
-        `<h2>${applyInlineMarkdown(h2[1])}</h2>`
-      );
-
-      return;
-    }
-
-
-    const h1 =
-      trimmed.match(
-        /^#\s+(.+)$/
-      );
-
-
-    if (h1) {
-
-      flushParagraph();
-      flushList();
-
-      output.push(
-        `<h1>${applyInlineMarkdown(h1[1])}</h1>`
-      );
-
-      return;
-    }
-
-
-    const quote =
-      trimmed.match(
-        /^>\s+(.+)$/
-      );
-
-
-    if (quote) {
-
-      flushParagraph();
-      flushList();
-
-      output.push(
-        `<blockquote>${applyInlineMarkdown(quote[1])}</blockquote>`
-      );
-
-      return;
-    }
-
-
-    const unordered =
-      trimmed.match(
-        /^[-*]\s+(.+)$/
-      );
-
-
-    if (unordered) {
-
-      flushParagraph();
-
-
-      if (
-        listType &&
-        listType !== "ul"
-      ) {
-        flushList();
-      }
-
-
-      listType = "ul";
-
-      listItems.push(
-        unordered[1]
-      );
-
-      return;
-    }
-
-
-    const ordered =
-      trimmed.match(
-        /^\d+\.\s+(.+)$/
-      );
-
-
-    if (ordered) {
-
-      flushParagraph();
-
-
-      if (
-        listType &&
-        listType !== "ol"
-      ) {
-        flushList();
-      }
-
-
-      listType = "ol";
-
-      listItems.push(
-        ordered[1]
-      );
-
-      return;
-    }
-
-
-    flushList();
-
-    paragraph.push(
-      trimmed
-    );
-
-  });
-
-
-  flushParagraph();
-  flushList();
-
-
-  return output.join("");
-
-}
-
-
-function applyInlineMarkdown(text) {
-
-  return text
-    .replace(
-      /\*\*(.+?)\*\*/g,
-      "<strong>$1</strong>"
-    )
-    .replace(
-      /\*(.+?)\*/g,
-      "<em>$1</em>"
-    );
+  );
 
 }
 
