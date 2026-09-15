@@ -1,3 +1,40 @@
+async function checkMaintenanceMode() {
+
+  const currentPage = window.location.pathname;
+
+  if (
+    currentPage.includes("/admin") ||
+    currentPage.includes("maintenance.html")
+  ) {
+    return;
+  }
+
+  try {
+
+    const response = await fetch(
+      "content/settings.json?cache=" + Date.now()
+    );
+
+    if (!response.ok) return;
+
+    const settings = await response.json();
+
+    if (settings.maintenance === true) {
+      window.location.replace("maintenance.html");
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Impossible de vérifier le mode maintenance.",
+      error
+    );
+
+  }
+
+}
+
+checkMaintenanceMode();
 /* ========================================
    NOLAN BERNARD — SCRIPT PRINCIPAL
 ======================================== */
