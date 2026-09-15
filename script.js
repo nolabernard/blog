@@ -912,28 +912,52 @@ async function loadHomeLatestArticles() {
 
   }
 }
+async function {
+  
 async function loadHomeContent() {
-  const heroTitle = document.getElementById("home-hero-title");
+  const homeElements = document.querySelectorAll(
+    "[data-home], [data-home-href], [data-home-src]"
+  );
 
-  if (!heroTitle) return;
+  if (!homeElements.length) return;
 
   try {
     const response = await fetch(
-      "content/home.json?cache=" + Date.now()
+      "/content/home.json?cache=" + Date.now()
     );
 
     if (!response.ok) {
-      throw new Error("Impossible de charger home.json");
+      throw new Error("Impossible de charger le contenu de l'accueil");
     }
 
     const home = await response.json();
 
-    if (home.heroTitle) {
-      heroTitle.textContent = home.heroTitle;
-    }
+    document.querySelectorAll("[data-home]").forEach(element => {
+      const key = element.dataset.home;
+
+      if (home[key] !== undefined) {
+        element.textContent = home[key];
+      }
+    });
+
+    document.querySelectorAll("[data-home-href]").forEach(element => {
+      const key = element.dataset.homeHref;
+
+      if (home[key]) {
+        element.href = home[key];
+      }
+    });
+
+    document.querySelectorAll("[data-home-src]").forEach(element => {
+      const key = element.dataset.homeSrc;
+
+      if (home[key]) {
+        element.src = home[key];
+      }
+    });
 
   } catch (error) {
-    console.error("Erreur contenu accueil :", error);
+    console.error("Erreur chargement accueil :", error);
   }
 }
 
