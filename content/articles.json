@@ -1,15 +1,6 @@
 {
   "articles": [
     {
-      "readingTime": "5 min",
-      "title": "Bonjour le monde",
-      "slug": "bonjour le monde",
-      "category": "Réflexions",
-      "date": "2026-09-15",
-      "body": "###### **cest un enieme test sa grand mere va vite ici** \\\n\n\n\n![](/images/uploads/_les-cafés-de-l-espi-pm.png)\n\nffdfd\n\n* &\n* d\n* \"\n*",
-      "intro": "ok ces tnouveua"
-    },
-    {
       "readingTime": "3 mn",
       "title": "ma pensée d'aujourd'hui",
       "slug": "pensé",
@@ -17,16 +8,7 @@
       "date": "2026-09-15",
       "intro": "ca me casse les couilles",
       "body": "mais cest ok",
-      "image": "/images/uploads/capture-d’écran-2026-09-14-à-23.56.34.png"
-    },
-    {
-      "readingTime": "5 min",
-      "title": "nouveau testaaa",
-      "slug": "dsdsd",
-      "category": "Entreprendre",
-      "date": "2026-09-15",
-      "intro": "dsdsdsd",
-      "body": "salut jow"
+      "image": ""
     }
   ]
 }
