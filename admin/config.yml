@@ -84,3 +84,27 @@ collections:
           - label: "Message maintenance"
             name: "maintenanceMessage"
             widget: "text"
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "Accueil"
+        name: "home"
+        file: "content/home.json"
+        format: "json"
+        fields:
+          - label: "Titre principal"
+            name: "heroTitle"
+            widget: "string"
+
+          - label: "Texte d'introduction"
+            name: "heroText"
+            widget: "text"
+
+          - label: "Titre de la section articles"
+            name: "latestArticlesTitle"
+            widget: "string"
+
+          - label: "Texte de fin de page"
+            name: "closingText"
+            widget: "text"
