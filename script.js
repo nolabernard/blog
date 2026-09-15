@@ -912,3 +912,29 @@ async function loadHomeLatestArticles() {
 
   }
 }
+async function loadHomeContent() {
+  const heroTitle = document.getElementById("home-hero-title");
+
+  if (!heroTitle) return;
+
+  try {
+    const response = await fetch(
+      "content/home.json?cache=" + Date.now()
+    );
+
+    if (!response.ok) {
+      throw new Error("Impossible de charger home.json");
+    }
+
+    const home = await response.json();
+
+    if (home.heroTitle) {
+      heroTitle.textContent = home.heroTitle;
+    }
+
+  } catch (error) {
+    console.error("Erreur contenu accueil :", error);
+  }
+}
+
+loadHomeContent();
