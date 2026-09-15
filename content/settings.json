@@ -1,5 +1,5 @@
 {
-  "maintenance": false,
+  "maintenance": true,
   "maintenanceTitle": "Je retravaille quelques détails.",
   "maintenanceMessage": "Le site revient rapidement."
 }
