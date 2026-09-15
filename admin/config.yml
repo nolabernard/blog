@@ -64,3 +64,23 @@ collections:
               - label: "Contenu"
                 name: "body"
                 widget: "markdown"
+  - name: "settings"
+    label: "Réglages du site"
+    files:
+      - label: "Maintenance"
+        name: "maintenance"
+        file: "content/settings.json"
+        format: "json"
+        fields:
+          - label: "Mode maintenance"
+            name: "maintenance"
+            widget: "boolean"
+            default: false
+
+          - label: "Titre maintenance"
+            name: "maintenanceTitle"
+            widget: "string"
+
+          - label: "Message maintenance"
+            name: "maintenanceMessage"
+            widget: "text"
