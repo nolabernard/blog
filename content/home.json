@@ -1,23 +1,18 @@
 {
-  "heroEyebrow": "Nolan Bernard — Notes personnelles",
-  "heroTitle": "Des idées dans un monde réel.",
-  "heroText": "Réflexions, expériences et apprentissages sur l'entrepreneuriat, l'humain et la technologie.",
-  "heroNote": "J'écris pour comprendre.",
-  "heroButtonText": "Lire les derniers articles →",
-  "heroButtonUrl": "#derniers-articles",
   "heroImage": "/images/montagne.jpeg",
-
-  "manifestoText": "Je peux avoir tort. Je peux changer d'avis. Certains textes vieilliront probablement mal. Ça fait partie du jeu.",
-
-  "articlesEyebrow": "À lire maintenant",
-  "articlesTitle": "Derniers articles",
-  "articlesButtonText": "Voir tous les articles →",
-
-  "quote": "Mieux vaut un échec qui t'apprend qu'un succès qui te fait stagner.",
-
-  "closingEyebrow": "Une idée à la fois",
-  "closingTitle": "Ce que je pense aujourd'hui n'est peut-être pas ce que je penserai demain.",
   "closingText": "C'est précisément pour ça que j'écris.",
-
-  "footerText": "J'écris pour comprendre."
+  "heroButtonUrl": "#derniers-articles",
+  "closingTitle": "Ce que je pense aujourd'hui n'est peut-être pas ce que je penserai demain.",
+  "heroText": "Réflexions et apprentissages sur l'entrepreneuriat.",
+  "footerText": "J'écris pour me vider.",
+  "articlesEyebrow": "À lire maintenant",
+  "heroNote": "J'en avais besoin ",
+  "manifestoText": "Je peux avoir tort. Je peux changer d'avis. Certains textes vieilliront probablement mal. Et je ne reviendrais jamais dessus.",
+  "heroEyebrow": "Nolan Bernard — Notes personnelles",
+  "closingEyebrow": "Plein d'idée à la fois",
+  "heroButtonText": "Mes dernières pensées →",
+  "articlesTitle": "The last one",
+  "articlesButtonText": "Voir tous les articles →",
+  "quote": "Mieux vaut un échec qui t'apprend qu'un succès qui te fait stagner.",
+  "heroTitle": "Mes pensées, ma vision, la légèreté"
 }
