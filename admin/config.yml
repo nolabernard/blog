@@ -87,24 +87,68 @@ collections:
 
   - name: "pages"
     label: "Pages"
-    files:
-      - label: "Accueil"
-        name: "home"
-        file: "content/home.json"
-        format: "json"
-        fields:
+           fields:
+          - label: "Petit texte au-dessus du titre"
+            name: "heroEyebrow"
+            widget: "string"
+
           - label: "Titre principal"
             name: "heroTitle"
             widget: "string"
 
-          - label: "Texte d'introduction"
+          - label: "Introduction"
             name: "heroText"
             widget: "text"
 
-          - label: "Titre de la section articles"
-            name: "latestArticlesTitle"
+          - label: "Petite phrase du hero"
+            name: "heroNote"
             widget: "string"
 
-          - label: "Texte de fin de page"
+          - label: "Texte du bouton"
+            name: "heroButtonText"
+            widget: "string"
+
+          - label: "Lien du bouton"
+            name: "heroButtonUrl"
+            widget: "string"
+
+          - label: "Image principale"
+            name: "heroImage"
+            widget: "image"
+            required: false
+
+          - label: "Texte manifeste"
+            name: "manifestoText"
+            widget: "text"
+
+          - label: "Petit titre section articles"
+            name: "articlesEyebrow"
+            widget: "string"
+
+          - label: "Titre section articles"
+            name: "articlesTitle"
+            widget: "string"
+
+          - label: "Bouton tous les articles"
+            name: "articlesButtonText"
+            widget: "string"
+
+          - label: "Citation"
+            name: "quote"
+            widget: "text"
+
+          - label: "Petit titre bloc final"
+            name: "closingEyebrow"
+            widget: "string"
+
+          - label: "Titre bloc final"
+            name: "closingTitle"
+            widget: "text"
+
+          - label: "Texte bloc final"
             name: "closingText"
             widget: "text"
+
+          - label: "Texte du footer"
+            name: "footerText"
+            widget: "string"
